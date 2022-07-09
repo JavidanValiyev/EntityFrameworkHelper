@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkHelper.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,10 @@ namespace EntityFrameworkHelper.Persistence
         private Guid _tenantId;
 
         public Guid TenantId { get { return _tenantId; } set { if (value != default) _tenantId = value; } }
-        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ReplaceService<IModelCacheKeyFactory, EntityFrameworkHelper.Persistence.ModelCacheKeyFactory>();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var types = GetEntityTypes();

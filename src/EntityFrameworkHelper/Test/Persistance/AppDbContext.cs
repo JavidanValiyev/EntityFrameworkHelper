@@ -20,8 +20,7 @@ namespace Test.Persistance
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"server=localhost;database=efCoreMultiTenant;user=sa;password=Aa123456!;Persist Security Info=True;Connect Timeout=300; Pooling=true; Max Pool Size=300");
-            optionsBuilder.EnableSensitiveDataLogging();
-            optionsBuilder.ReplaceService<IModelCacheKeyFactory, EntityFrameworkHelper.Persistence.ModelCacheKeyFactory>();
+            optionsBuilder.EnableSensitiveDataLogging(); 
         }
         public DbSet<Book> Books { get; set; }
        
