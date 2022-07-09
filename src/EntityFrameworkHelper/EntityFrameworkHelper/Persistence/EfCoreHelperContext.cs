@@ -32,19 +32,17 @@ namespace EntityFrameworkHelper.Persistence
             {
                 var filters = new List<LambdaExpression>();
                 var baseFilter = (Expression<Func<IBaseContract, bool>>)(_ => true);
-
-
-                if (type.GetInterfaces().Contains(typeof(ITenant)))
+                var interfaces = type.GetInterfaces();
+                if (interfaces.Contains(typeof(ITenant)))
                 {
                     var tenantFilter = (Expression<Func<ITenant, bool>>)(e => e.TenantId == _tenantId);
                     filters.Add(tenantFilter);
                 }
-                if (type.GetInterfaces().Contains(typeof(ISoftDeletable)))
+                if (interfaces.Contains(typeof(ISoftDeletable)))
                 {
                     var softDeleteFilter = (Expression<Func<ISoftDeletable, bool>>)(e => !e.IsDeleted);
                     filters.Add(softDeleteFilter);
                 }
-
                 var query = CombineQueryFilters(type, baseFilter, filters);
                 modelBuilder.Entity(type).HasQueryFilter(query);
             }
