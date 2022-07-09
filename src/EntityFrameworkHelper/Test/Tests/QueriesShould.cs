@@ -16,7 +16,7 @@ namespace Test.Tests
     {
         [Test]
         [TestCase(20)]
-        public void QueriResultShould(int testCount)
+        public void QueryResultsShould(int testCount)
         {
             var serviceProvider = new ServiceCollection()
                                  .AddLogging()
