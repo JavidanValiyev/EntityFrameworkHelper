@@ -3,3 +3,16 @@
 ################################################################################
 
 /src/EntityFrameworkHelper/EntityFrameworkHelper/bin/Debug/net6.0
+/src/EntityFrameworkHelper/.vs/EntityFrameworkHelper/DesignTimeBuild
+/src/EntityFrameworkHelper/.vs/EntityFrameworkHelper/v17
+/src/EntityFrameworkHelper/.vs/EntityFrameworkHelper/project-colors.json
+/src/EntityFrameworkHelper/EntityFrameworkHelper/obj
+/src/EntityFrameworkHelper/Test/bin/Debug/net6.0
+/.vs
+/src/EntityFrameworkHelper/Test/obj
+/test/EntityFrameworkHelper.Test/.vs/EntityFrameworkHelper.Test
+/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/obj/Debug/.NETFramework,Version=v4.8.AssemblyAttributes.cs
+/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/obj
+/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/Properties
+/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/packages.config
+/test/EntityFrameworkHelper.Test/packages
