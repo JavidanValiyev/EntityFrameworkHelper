@@ -99,11 +99,11 @@ namespace EntityFrameworkHelper.Persistence
                         var entity = (IAuditable)entry.Entity;
                         entity.CreatedDate = DateTime.UtcNow;
                         entity.CreatedBy = _tenantId;
-                        if (entry.Entity is ITenant)
-                        {
-                            var tenantEntity = (ITenant)entry.Entity;
-                            tenantEntity.TenantId = _tenantId;
-                        }
+                    }
+                    if (entry.Entity is ITenant)
+                    {
+                        var tenantEntity = (ITenant)entry.Entity;
+                        tenantEntity.TenantId = _tenantId;
                     }
                 }
                 else if (entry.Entity is IAuditable && entry.State == EntityState.Modified)
