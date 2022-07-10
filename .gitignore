@@ -20,3 +20,5 @@
 /src/EntityFrameworkHelper/Test/bin/Release/net6.0
 /EntityFrameworkHelper/obj
 /Test/obj
+/EntityFrameworkHelper/bin/Debug/net6.0
+/Test/bin/Debug/net6.0
