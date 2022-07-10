@@ -18,3 +18,5 @@
 /test/EntityFrameworkHelper.Test/packages
 /src/EntityFrameworkHelper/EntityFrameworkHelper/bin
 /src/EntityFrameworkHelper/Test/bin/Release/net6.0
+/EntityFrameworkHelper/obj
+/Test/obj
