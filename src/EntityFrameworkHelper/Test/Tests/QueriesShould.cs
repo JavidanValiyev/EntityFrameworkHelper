@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
@@ -39,9 +40,12 @@ namespace Test.Tests
                     appDbContext.Add(book);
                     appDbContext.SaveChanges();
                     Assert.IsFalse(book.Id == 0, "Book did not added !");
-                    var books = appDbContext.Books.ToList();
-                    Assert.IsFalse(!books.Any(), "Books not found!");
-                    Assert.IsFalse(books.Count != 1, "Book count should be 1");
+                    var books = appDbContext.Books.Where(x=>true);
+
+                    Console.WriteLine(books.ToQueryString());
+
+                    Assert.IsFalse(!books.ToList().Any(), "Books not found!");
+                    Assert.IsFalse(books.ToList().Count != 1, "Book count should be 1");
                     var bookName = books.FirstOrDefault().Name;
                     Assert.IsTrue(bookName == "book" + tenantId);
                 }

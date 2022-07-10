@@ -17,3 +17,4 @@
 /test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/packages.config
 /test/EntityFrameworkHelper.Test/packages
 /src/EntityFrameworkHelper/EntityFrameworkHelper/bin
+/src/EntityFrameworkHelper/Test/bin/Release/net6.0
