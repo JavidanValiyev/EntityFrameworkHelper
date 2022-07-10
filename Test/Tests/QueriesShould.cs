@@ -51,7 +51,7 @@ namespace Test.Tests
                     Assert.IsFalse(!books.ToList().Any(), "Books not found!");
                     Assert.IsFalse(books.ToList().Count != 1, "Book count should be 1");
                     var bookName = books.FirstOrDefault().Name;
-                    Assert.AreEqual(tenantId,books.FirstOrDefault().Author.TenantId, "Author tenant Id should be same with book");
+                    Assert.AreEqual(tenantId,books.FirstOrDefault().Author.TenantId.ToString(), "Author tenant Id should be same with book");
 
                     Assert.IsTrue(bookName == "book" + tenantId);
                 }
