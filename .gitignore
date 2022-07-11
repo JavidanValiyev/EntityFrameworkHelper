@@ -1,24 +1,36 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+nupkg/
 
-/src/EntityFrameworkHelper/EntityFrameworkHelper/bin/Debug/net6.0
-/src/EntityFrameworkHelper/.vs/EntityFrameworkHelper/DesignTimeBuild
-/src/EntityFrameworkHelper/.vs/EntityFrameworkHelper/v17
-/src/EntityFrameworkHelper/.vs/EntityFrameworkHelper/project-colors.json
-/src/EntityFrameworkHelper/EntityFrameworkHelper/obj
-/src/EntityFrameworkHelper/Test/bin/Debug/net6.0
-/.vs
-/src/EntityFrameworkHelper/Test/obj
-/test/EntityFrameworkHelper.Test/.vs/EntityFrameworkHelper.Test
-/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/obj/Debug/.NETFramework,Version=v4.8.AssemblyAttributes.cs
-/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/obj
-/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/Properties
-/test/EntityFrameworkHelper.Test/EntityFrameworkHelper.Test/packages.config
-/test/EntityFrameworkHelper.Test/packages
-/src/EntityFrameworkHelper/EntityFrameworkHelper/bin
-/src/EntityFrameworkHelper/Test/bin/Release/net6.0
-/EntityFrameworkHelper/obj
-/Test/obj
-/EntityFrameworkHelper/bin/Debug/net6.0
-/Test/bin/Debug/net6.0
+# Visual Studio Code
+.vscode
+
+# Rider
+.idea
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+.vs/
