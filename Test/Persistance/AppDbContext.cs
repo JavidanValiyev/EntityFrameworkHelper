@@ -1,28 +1,25 @@
 ﻿using EntityFrameworkHelper.Persistence;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EntityFrameworkHelper.Contracts;
 using Test.Models;
 
-namespace Test.Persistance
-{
-    public class AppDbContext : EfCoreHelperContext
-    {
-        public AppDbContext(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
-        {
-        }
+namespace Test.Persistance;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"server=localhost;database=efCoreMultiTenant;user=sa;password=Aa123456!;Persist Security Info=True;Connect Timeout=300; Pooling=true; Max Pool Size=300");
-            optionsBuilder.EnableSensitiveDataLogging(); 
-        }
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Author> Authors { get; set; }
+public class AppDbContext : EfCoreHelperContext<Guid>
+{
+    public AppDbContext()
+    {
+
     }
+    public AppDbContext(ICurrentUserService<Guid> currentUserService) : base(currentUserService)
+    {
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(@"Server=localhost\MSSQLSERVER01;Database=efCoreTest;Trusted_Connection=True;");
+        optionsBuilder.EnableSensitiveDataLogging(); 
+    }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Author> Authors { get; set; }
 }

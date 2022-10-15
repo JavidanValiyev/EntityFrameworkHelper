@@ -1,19 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EntityFrameworkHelper.Persistence
 {
-    public class ModelCacheKeyFactory : IModelCacheKeyFactory
+    public abstract class ModelCacheKeyFactory<TTentantType> : IModelCacheKeyFactory where TTentantType : struct,IComparable
     {
         public object Create(DbContext context, bool designTime)
-        => context is EfCoreHelperContext dynamicContext
+        => context is EfCoreHelperContext<TTentantType> dynamicContext
             ? (context.GetType(), dynamicContext.TenantId, designTime)
-            : (object)context.GetType();
+            : context.GetType();
 
         public object Create(DbContext context)
             => Create(context, true);

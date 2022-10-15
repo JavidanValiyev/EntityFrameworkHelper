@@ -1,45 +1,46 @@
 ﻿using EntityFrameworkHelper.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EntityFrameworkHelper.Persistence
 {
-    public abstract class EfCoreHelperContext : DbContext
+    /// <summary>
+    /// You have to define your type of PK of your tenant table 
+    /// </summary>
+    /// <typeparam name="TTenantIdType"></typeparam>
+    public abstract class EfCoreHelperContext<TTenantIdType> : DbContext where TTenantIdType : struct,IComparable
     {
-        private List<Type> _types = null;
-        public EfCoreHelperContext(IHttpContextAccessor httpContextAccessor,string tenantKey = "TenantId")
+        private List<Type> _types = new List<Type>();
+        protected EfCoreHelperContext()
         {
-            _tenantId = Guid.Parse(httpContextAccessor.HttpContext.Request.Headers[tenantKey].ToString());
-        }
-        private Guid _tenantId;
 
-        public Guid TenantId { get { return _tenantId; } set { if (value != default) _tenantId = value; } }
+        }
+
+        protected EfCoreHelperContext(ICurrentUserService<TTenantIdType> userService)
+        {
+            _tenantId = userService.GetTenantId();
+        }
+        private TTenantIdType _tenantId;
+
+        public TTenantIdType TenantId { get => _tenantId;
+            set => _tenantId = value;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.ReplaceService<IModelCacheKeyFactory, EntityFrameworkHelper.Persistence.ModelCacheKeyFactory>();
+            optionsBuilder.ReplaceService<IModelCacheKeyFactory, ModelCacheKeyFactory>();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var types = GetEntityTypes();
             foreach (var type in GetEntityTypes())
             {
                 var filters = new List<LambdaExpression>();
                 var baseFilter = (Expression<Func<IBaseContract, bool>>)(_ => true);
                 var interfaces = type.GetInterfaces();
-                if (interfaces.Contains(typeof(ITenant)))
+                if (interfaces.Contains(typeof(ITenant<TTenantIdType>)))
                 {
-                    var tenantFilter = (Expression<Func<ITenant, bool>>)(e => e.TenantId == _tenantId);
+                    var tenantFilter = (Expression<Func<ITenant<TTenantIdType>, bool>>)(e => e.TenantId.Equals(_tenantId));
                     filters.Add(tenantFilter);
                 }
                 if (interfaces.Contains(typeof(ISoftDeletable)))
@@ -75,10 +76,7 @@ namespace EntityFrameworkHelper.Persistence
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await Task.Run(() =>
-            {
-                ConfigureStates();
-            }); 
+            await Task.Run(ConfigureStates, cancellationToken); 
             return await base.SaveChangesAsync(cancellationToken);
         }
         private void ConfigureStates()
@@ -94,21 +92,18 @@ namespace EntityFrameworkHelper.Persistence
                 }
                 else if (entry.State == EntityState.Added)
                 {
-                    if ((entry.Entity is IAuditable))
+                    if (entry.Entity is IAuditable<TTenantIdType> entity)
                     {
-                        var entity = (IAuditable)entry.Entity;
                         entity.CreatedDate = DateTime.UtcNow;
                         entity.CreatedBy = _tenantId;
                     }
-                    if (entry.Entity is ITenant)
+                    if (entry.Entity is ITenant<TTenantIdType> tenantEntity)
                     {
-                        var tenantEntity = (ITenant)entry.Entity;
                         tenantEntity.TenantId = _tenantId;
                     }
                 }
-                else if (entry.Entity is IAuditable && entry.State == EntityState.Modified)
+                else if (entry.Entity is IAuditable<TTenantIdType> entity && entry.State == EntityState.Modified)
                 {
-                    var entity = (IAuditable)entry.Entity;
                     entity.LastModifiedDate = DateTime.UtcNow;
                     entity.ModifiedBy = _tenantId;
                 }
@@ -117,7 +112,7 @@ namespace EntityFrameworkHelper.Persistence
         }
         private IEnumerable<Type> GetEntityTypes()
         {
-            if (_types is not null && _types.Any())
+            if (_types.Any())
                 return _types;
 
             List<Type> result = new List<Type>();
@@ -126,7 +121,7 @@ namespace EntityFrameworkHelper.Persistence
                 if (properties.PropertyType.IsGenericType && properties.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
                 {
                     var type = properties.PropertyType.GetGenericArguments().FirstOrDefault();
-                    result.Add(type);
+                    if (type != null) result.Add(type);
                 }
             }
             return result;

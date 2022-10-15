@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Test.Models
 {
-    public class Author : ITenant, ISoftDeletable
+    public class Author : ITenant<Guid>, ISoftDeletable
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
