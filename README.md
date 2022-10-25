@@ -4,7 +4,7 @@ This library created for helping to converting .net entity framework projects to
 
 ## Installation
 
- Not ready yet 
+(https://www.nuget.org/packages/Armudu.EntityFrameworkCore.Atom/#readme-body-tab)
  
 ## Usage
 
