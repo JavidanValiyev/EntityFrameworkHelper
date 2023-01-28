@@ -3,9 +3,9 @@
 This library created for helping to converting .net entity framework projects to multi tenant entity framework project
 
 ## Installation
-
+```
 dotnet add package Armudu.EntityFrameworkCore.Atom
- 
+ ```
 ## Usage
 
 Inherit from EfCoreHelperContext
