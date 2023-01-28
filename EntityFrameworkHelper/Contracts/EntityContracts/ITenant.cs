@@ -1,4 +1,4 @@
-﻿namespace EntityFrameworkHelper.Contracts;
+﻿namespace EntityFrameworkHelper.Contracts.EntityContracts;
 
 public interface ITenant<T> : IBaseContract where T :struct,IComparable
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using EntityFrameworkHelper.Contracts;
+using EntityFrameworkHelper.Contracts.EntityContracts;
 
 namespace Test.Models;
 

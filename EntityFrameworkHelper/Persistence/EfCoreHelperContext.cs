@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
+using EntityFrameworkHelper.Contracts.EntityContracts;
 
 namespace EntityFrameworkHelper.Persistence
 {
@@ -18,9 +19,9 @@ namespace EntityFrameworkHelper.Persistence
 
         }
 
-        protected EfCoreHelperContext(ICurrentUserService<TTenantIdType> userService)
+        protected EfCoreHelperContext(IContextUserManager<TTenantIdType> userManager)
         {
-            _tenantId = userService.GetTenantId();
+            _tenantId = userManager.GetTenantId();
         }
         private TTenantIdType _tenantId;
 
@@ -33,11 +34,11 @@ namespace EntityFrameworkHelper.Persistence
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var type in GetEntityTypes())
+            foreach (var type in modelBuilder.Model.GetEntityTypes())
             {
                 var filters = new List<LambdaExpression>();
                 var baseFilter = (Expression<Func<IBaseContract, bool>>)(_ => true);
-                var interfaces = type.GetInterfaces();
+                var interfaces = type.ClrType.GetInterfaces();
                 if (interfaces.Contains(typeof(ITenant<TTenantIdType>)))
                 {
                     var tenantFilter = (Expression<Func<ITenant<TTenantIdType>, bool>>)(e => e.TenantId.Equals(_tenantId));
@@ -48,8 +49,8 @@ namespace EntityFrameworkHelper.Persistence
                     var softDeleteFilter = (Expression<Func<ISoftDeletable, bool>>)(e => !e.IsDeleted);
                     filters.Add(softDeleteFilter);
                 }
-                var query = CombineQueryFilters(type, baseFilter, filters);
-                modelBuilder.Entity(type).HasQueryFilter(query);
+                var query = CombineQueryFilters(type.ClrType, baseFilter, filters);
+                modelBuilder.Entity(type.ClrType).HasQueryFilter(query);
             }
             base.OnModelCreating(modelBuilder);
         }
@@ -109,22 +110,6 @@ namespace EntityFrameworkHelper.Persistence
                 }
 
             }
-        }
-        private IEnumerable<Type> GetEntityTypes()
-        {
-            if (_types.Any())
-                return _types;
-
-            List<Type> result = new List<Type>();
-            foreach (var properties in this.GetType().GetProperties())
-            {
-                if (properties.PropertyType.IsGenericType && properties.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
-                {
-                    var type = properties.PropertyType.GetGenericArguments().FirstOrDefault();
-                    if (type != null) result.Add(type);
-                }
-            }
-            return result;
         }
     }
 }

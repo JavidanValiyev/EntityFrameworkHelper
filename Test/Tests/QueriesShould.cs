@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Models;
 using Test.Persistance;
 using Test.Services;
@@ -16,7 +9,7 @@ namespace Test.Tests
     [TestFixture]
     public class QueriesShould
     {
-        public List<Category> GenerateCategoriList()
+        private List<Category> GenerateCategoriList()
         {
             List<Category> categories = new List<Category>();
 
@@ -31,7 +24,7 @@ namespace Test.Tests
             return categories;
         }
 
-        public List<Company> GenerateCompany()
+        private List<Company> GenerateCompany()
         {
             List<Company> companies = new List<Company>();
             for (int i = 0; i < 5; i++)
@@ -44,7 +37,8 @@ namespace Test.Tests
 
             return companies;
         }
-        public void SetFakeDatToDatabase(AdminDbContext adminDbContext)
+
+        private void SetFakeDatToDatabase(AdminDbContext adminDbContext)
         {
             adminDbContext.Companies.AddRange(GenerateCompany());
             adminDbContext.Categories.AddRange(GenerateCategoriList());
@@ -58,7 +52,7 @@ namespace Test.Tests
             var tenantId = adminDbContext.Companies.FirstOrDefault()?.Id;
             Assert.AreNotEqual(null, tenantId);
             
-            AppDbContext appDbContext = new(CurrentUserService.CreateFromManual(tenantId.GetValueOrDefault()));
+            AppDbContext appDbContext = new(ContextUserManager.CreateFromManual(tenantId.GetValueOrDefault()));
             
             var companies = appDbContext.Companies.ToList();
             
@@ -85,14 +79,13 @@ namespace Test.Tests
             companyOne.CompanyCategories.AddRange(assignedToCompanyOne);
             adminDbContext.SaveChanges();
 
-            AppDbContext appDbContext = new AppDbContext(CurrentUserService.CreateFromManual(companyOne.Id));
+            AppDbContext appDbContext = new AppDbContext(ContextUserManager.CreateFromManual(companyOne.Id));
 
             var assignedCategoryList = appDbContext.Companies
                 .Include(x => x.CompanyCategories)
                 .FirstOrDefault(c => c.Id == companyOne.Id)?.CompanyCategories;
-            Assert.AreNotEqual(null,assignedCategoryList);
-            Assert.AreEqual(5,assignedCategoryList.Count(),"Assigned category list count should be 5");
-            
+            Assert.AreNotEqual(null,assignedCategoryList); 
+            Assert.AreEqual(5, assignedCategoryList.Count(), "Assigned category list count should be 5");
         }
         [SetUp]
         public static void AssemblyInit()

@@ -4,7 +4,7 @@ This library created for helping to converting .net entity framework projects to
 
 ## Installation
 
- Not ready yet 
+dotnet add package Armudu.EntityFrameworkCore.Atom
  
 ## Usage
 
@@ -16,16 +16,16 @@ Implement User service
 
 ![UserService](https://camo.githubusercontent.com/08ce2de040df94b248b17422219a02a28a2b969897466d7b044992becc1cf3eb/68747470733a2f2f7777772e6c696e6b706963747572652e636f6d2f712f696e6469722d315f332e706e67)
 
-And implement the contract which you want to use
-![EntityUsage](https://camo.githubusercontent.com/4d98749f9602b63161c3f92089ff19aeb5d1f48f9c4b87f81f7c97517b7e88fd/68747470733a2f2f692e6962622e636f2f7730547a336e562f646f776e6c6f61642e706e67)
+And implement the contract which you want to use.
+You have to set type of Id of audit user 
+![EntityUsage](https://www.linkpicture.com/q/download_753.png)
 
-After that, your queries converted to this 
+After that, your queries automatically will become like this 
 ![Query](https://camo.githubusercontent.com/2541eac1308fd464a0a89f56b39a2a9636a4eb28c745d7c29552dbd0672a6ae6/68747470733a2f2f692e6962622e636f2f78437a706342522f646f776e6c6f61642e706e67)
-Current tenantId filter and !IsDeleted automatically added to query
+Current tenantId filter and !IsDeleted added to query
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
 Please make sure to update tests as appropriate.
 
 ## License

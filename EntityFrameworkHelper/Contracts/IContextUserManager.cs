@@ -1,6 +1,6 @@
 namespace EntityFrameworkHelper.Contracts;
 
-public interface ICurrentUserService<out T>
+public interface IContextUserManager<out T>
 { 
     T GetTenantId();
 }

@@ -2,9 +2,9 @@ using EntityFrameworkHelper.Contracts;
 
 namespace Test.Services;
 
-public class CurrentUserService : ICurrentUserService<Guid>
+public class ContextUserManager : IContextUserManager<Guid>
 {
-    private CurrentUserService(Guid Id)
+    private ContextUserManager(Guid Id)
     {
         this.Id = Id;
     }
@@ -16,8 +16,8 @@ public class CurrentUserService : ICurrentUserService<Guid>
         return  Guid.NewGuid();
     }
 
-    public static CurrentUserService CreateFromManual(Guid Id)
+    public static ContextUserManager CreateFromManual(Guid Id)
     {
-        return new CurrentUserService(Id);
+        return new ContextUserManager(Id);
     }
 }

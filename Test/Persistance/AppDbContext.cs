@@ -11,13 +11,13 @@ public class AppDbContext : EfCoreHelperContext<Guid>
     {
 
     }
-    public AppDbContext(ICurrentUserService<Guid> currentUserService) : base(currentUserService)
+    public AppDbContext(IContextUserManager<Guid> contextUserManager) : base(contextUserManager)
     {
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Server=localhost\MSSQLSERVER01;Database=efCoreTest;Trusted_Connection=True;");
+        optionsBuilder.UseSqlServer(@"Server=localhost\MSSQLSERVER01;Database=efCoreTest;User Id=EfCoreTestUser;Password=Aa123456.!;Trusted_Connection=True;TrustServerCertificate=True;");
         optionsBuilder.EnableSensitiveDataLogging(); 
     }
     public DbSet<Company> Companies { get; set; }
