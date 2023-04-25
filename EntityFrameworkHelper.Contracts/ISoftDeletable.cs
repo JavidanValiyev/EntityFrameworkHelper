@@ -1,4 +1,4 @@
-﻿namespace EntityFrameworkHelper.Contracts.EntityContracts
+﻿namespace EntityFrameworkHelper.Contracts
 {
     public interface ISoftDeletable : IBaseContract
     {

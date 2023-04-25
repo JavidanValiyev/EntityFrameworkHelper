@@ -1,4 +1,4 @@
-﻿namespace EntityFrameworkHelper.Contracts.EntityContracts;
+﻿namespace EntityFrameworkHelper.Contracts;
 
 public interface IAuditable<TTenantIdType> : IBaseContract where TTenantIdType : struct, IComparable
 {

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
-using EntityFrameworkHelper.Contracts.EntityContracts;
 
 namespace EntityFrameworkHelper.Persistence
 {
