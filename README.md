@@ -1,17 +1,21 @@
 # EfCore Helper Context
 
-If you are working on projects that contain multi-tenant, auditable or soft deletable tables
-So you have add  ``` && TenantId=={someValue} ``` or  ```&& !IsDeleted ``` conditions or something like that to all of your entity framework core queries
-Sometime this is hard to manage all of this queries, especially large project that contain amount of query.
+If you are working on projects that contain multi-tenant, auditable or soft deletable tables,
+So you had add  ``` && TenantId=={someValue} ``` or  ```&& !IsDeleted ``` conditions or something like that to all of your entity framework core queries.
+Sometime this is hard to manage all of this queries, especially large project that contain big amount of query.
 If you or your teammate forget to add these condition to queries. You may be in trouble. 🤣
 
 This tiny library may help you. Take a look 
 
 ## Installation
 ```
+dotnet add package Armudu.EntityFrameworkCore.Atom.Contract
 dotnet add package Armudu.EntityFrameworkCore.Atom
  ```
 ## Usage
+If your Entity and DbContext classes are placed on different layers due to the architecture (for example CQRS) you are using, 
+you have to install package ```Armudu.EntityFrameworkCore.Atom.Contract``` to layer that contain entities. Also you have to install package 
+```Armudu.EntityFrameworkCore.Atom``` to layer that contain your ApplicationDbContext.
 
 Inherit from EfCoreHelperContext
 ![RemoteImage](https://camo.githubusercontent.com/13ae804923aa0e7d3db0f4c6f5b5d325c7e5560e98658993aecde42d63cd4205/68747470733a2f2f692e6962622e636f2f6733766446546a2f646f776e6c6f61642e706e67)
