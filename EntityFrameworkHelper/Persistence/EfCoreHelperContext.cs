@@ -54,19 +54,21 @@ namespace EntityFrameworkHelper.Persistence
             }
             base.OnModelCreating(modelBuilder);
         }
-        public LambdaExpression CombineQueryFilters(Type entityType, LambdaExpression baseFilter, IEnumerable<LambdaExpression> andAlsoExpressions)
+
+        private LambdaExpression CombineQueryFilters(Type entityType, LambdaExpression baseFilter, IEnumerable<LambdaExpression> andAlsoExpressions)
         {
             var newParam = Expression.Parameter(entityType ?? throw new ArgumentNullException(nameof(entityType)));
 
             if (baseFilter is null)
                 throw new ArgumentNullException(nameof(baseFilter));
-            if (andAlsoExpressions is null || !andAlsoExpressions.Any())
+            var lambdaExpressions = andAlsoExpressions.ToList();
+            if (!lambdaExpressions.Any())
                 return baseFilter;
             
             var andAlsoExprBase = (Expression<Func<IBaseContract, bool>>)(_ => true);
             var expressionGlobal = ReplacingExpressionVisitor.Replace(andAlsoExprBase.Parameters.Single(), newParam, andAlsoExprBase.Body);
             
-            foreach (var andAlso in andAlsoExpressions)
+            foreach (var andAlso in lambdaExpressions)
             {
                 var expression = ReplacingExpressionVisitor.Replace(andAlso.Parameters.Single(), newParam, andAlso.Body);
                 expressionGlobal = Expression.AndAlso(expressionGlobal, expression);
