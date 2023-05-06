@@ -49,7 +49,8 @@ namespace EntityFrameworkHelper.Persistence
                     filters.Add(softDeleteFilter);
                 }
                 var query = CombineQueryFilters(type.ClrType, baseFilter, filters);
-                modelBuilder.Entity(type.ClrType).HasQueryFilter(query);
+                if(query != baseFilter)
+                    modelBuilder.Entity(type.ClrType).HasQueryFilter(query);
             }
             base.OnModelCreating(modelBuilder);
         }
