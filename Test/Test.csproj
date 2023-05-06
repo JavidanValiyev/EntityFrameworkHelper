@@ -22,6 +22,7 @@
  </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\EntityFrameworkHelper\EntityFrameworkHelper.csproj" />
   </ItemGroup>
 
