@@ -12,7 +12,7 @@ namespace Test.Tests
     [TestFixture]
     public class EfCoreHelperContextTest
     {
-        private List<Category> GenerateCategoriList()
+        private List<Category> GenerateCategoryList()
         {
             List<Category> categories = new List<Category>();
 
@@ -41,10 +41,10 @@ namespace Test.Tests
             return companies;
         }
 
-        private void SetFakeDatToDatabase(AdminDbContext adminDbContext)
+        private void SetFakeDataToDatabase(AdminDbContext adminDbContext)
         {
             adminDbContext.Companies.AddRange(GenerateCompany());
-            adminDbContext.Categories.AddRange(GenerateCategoriList());
+            adminDbContext.Categories.AddRange(GenerateCategoryList());
             adminDbContext.SaveChanges();
         }
 
@@ -52,7 +52,7 @@ namespace Test.Tests
         public void CompaniesCountShouldNotBeOne()
         {
             AdminDbContext adminDbContext = new AdminDbContext();
-            SetFakeDatToDatabase(adminDbContext);
+            SetFakeDataToDatabase(adminDbContext);
             var tenantId = adminDbContext.Companies.FirstOrDefault()?.Id;
             Assert.AreNotEqual(null, tenantId);
 
@@ -67,7 +67,7 @@ namespace Test.Tests
         public void CategoriesShouldOnlyOwn()
         {
             AdminDbContext adminDbContext = new AdminDbContext();
-            SetFakeDatToDatabase(adminDbContext);
+            SetFakeDataToDatabase(adminDbContext);
             Random random = new Random();
             var companyOne = adminDbContext.Companies.Skip(random.Next() % adminDbContext.Companies.Count())
                 .FirstOrDefault();
@@ -76,11 +76,11 @@ namespace Test.Tests
 
             var assignedToCompanyOne = categories.Take(5).Select(c => new CompanyCategory()
             {
-                TenantId = companyOne.Id,
+                TenantId = companyOne!.Id,
                 CategoryId = c.Id
             }).ToList();
 
-            companyOne.CompanyCategories.AddRange(assignedToCompanyOne);
+            companyOne!.CompanyCategories.AddRange(assignedToCompanyOne);
             adminDbContext.SaveChanges();
 
             AppDbContext appDbContext = new AppDbContext(ContextUserManager.CreateFromManual(companyOne.Id));
