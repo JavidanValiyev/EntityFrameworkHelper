@@ -4,9 +4,9 @@ namespace Test.Services;
 
 public class ContextUserManager : IContextUserManager<Guid>
 {
-    private ContextUserManager(Guid Id)
+    private ContextUserManager(Guid id)
     {
-        this.Id = Id;
+        this.Id = id;
     }
     private Guid Id { get; }
     public Guid GetTenantId()
@@ -16,8 +16,8 @@ public class ContextUserManager : IContextUserManager<Guid>
         return  Guid.NewGuid();
     }
 
-    public static ContextUserManager CreateFromManual(Guid Id)
+    public static ContextUserManager CreateFromManual(Guid id)
     {
-        return new ContextUserManager(Id);
+        return new ContextUserManager(id);
     }
 }
