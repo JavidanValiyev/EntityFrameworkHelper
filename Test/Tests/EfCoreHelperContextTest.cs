@@ -12,7 +12,7 @@ namespace Test.Tests
     [TestFixture]
     public class EfCoreHelperContextTest
     {
-        private List<Category> GenerateCategoriList()
+        private List<Category> GenerateCategoryList()
         {
             List<Category> categories = new List<Category>();
 
@@ -44,7 +44,7 @@ namespace Test.Tests
         private void SetFakeDatToDatabase(AdminDbContext adminDbContext)
         {
             adminDbContext.Companies.AddRange(GenerateCompany());
-            adminDbContext.Categories.AddRange(GenerateCategoriList());
+            adminDbContext.Categories.AddRange(GenerateCategoryList());
             adminDbContext.SaveChanges();
         }
 

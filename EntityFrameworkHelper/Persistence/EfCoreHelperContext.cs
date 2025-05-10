@@ -33,25 +33,7 @@ namespace EntityFrameworkHelper.Persistence
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var type in modelBuilder.Model.GetEntityTypes())
-            {
-                var filters = new List<LambdaExpression>();
-                var baseFilter = (Expression<Func<IBaseContract, bool>>)(_ => true);
-                var interfaces = type.ClrType.GetInterfaces();
-                if (interfaces.Contains(typeof(ITenant<TTenantIdType>)))
-                {
-                    var tenantFilter = (Expression<Func<ITenant<TTenantIdType>, bool>>)(e => e.TenantId.Equals(_tenantId));
-                    filters.Add(tenantFilter);
-                }
-                if (interfaces.Contains(typeof(ISoftDeletable)))
-                {
-                    var softDeleteFilter = (Expression<Func<ISoftDeletable, bool>>)(e => !e.IsDeleted);
-                    filters.Add(softDeleteFilter);
-                }
-                var query = CombineQueryFilters(type.ClrType, baseFilter, filters);
-                if(query != baseFilter)
-                    modelBuilder.Entity(type.ClrType).HasQueryFilter(query);
-            }
+            modelBuilder.AddGlobalFilters(_tenantId);
             base.OnModelCreating(modelBuilder);
         }
 

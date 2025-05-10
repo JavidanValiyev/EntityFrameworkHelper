@@ -31,6 +31,6 @@
       <Pack>true</Pack>
       <Link>LICENSE</Link>
     </None>
-    <None Include="..\README.md" Pack="true" PackagePath=""/>
+    <None Include="..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
