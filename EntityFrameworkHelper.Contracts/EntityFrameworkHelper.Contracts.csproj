@@ -9,13 +9,13 @@
         <PackageProjectUrl>https://github.com/JavidanValiyev/EntityFrameworkHelper</PackageProjectUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <Copyright>Copyright (c) 2023 Armudu</Copyright>
-        <Version>3.0.0</Version>
+        <Copyright>Copyright (c) 2025 Armudu</Copyright>
+        <Version>4.0.0</Version>
         <Authors>JavidanValiyev</Authors>
         <Company>Armudu</Company>
         <Description>Contracts for entity framework helper db context usage</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>3.0.0</PackageVersion>
+        <PackageVersion>4.0.0</PackageVersion>
         <PackageReleaseNotes>Contracts added</PackageReleaseNotes>
     </PropertyGroup>
 

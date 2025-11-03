@@ -8,13 +8,13 @@
     <PackageProjectUrl>https://github.com/JavidanValiyev/EntityFrameworkHelper</PackageProjectUrl> 
     <PackageLicenseFile>LICENSE</PackageLicenseFile> 
      
-    <Copyright>Copyright (c) 2022 Armudu</Copyright>  
-    <Version>3.0.0</Version>
+    <Copyright>Copyright (c) 2025 Armudu</Copyright>  
+    <Version>4.0.0</Version>
     <Authors>JavidanValiyev</Authors>
     <Company>Armudu</Company>
     <Description>This library created for helping to converting .net entity framework projects to multi tenant entity framework project.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>4.0.0</PackageVersion>
     <PackageReleaseNotes>Contracts removed </PackageReleaseNotes>
   </PropertyGroup>
 
