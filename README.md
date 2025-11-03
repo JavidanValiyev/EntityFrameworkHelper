@@ -1,42 +1,50 @@
 # EfCore Helper Context
 
-If you are working on projects that contain multi-tenant, auditable or soft deletable tables,
-So you had add  ``` && TenantId=={someValue} ``` or  ```&& !IsDeleted ``` conditions or something like that to all of your entity framework core queries.
-Sometime this is hard to manage all of this queries, especially large project that contain big amount of query.
-If you or your teammate forget to add these condition to queries. You may be in trouble. 🤣
+If you've ever worked on projects with **multi-tenant**, **auditable**, or **soft-deletable** tables, you know the pain. You have to constantly add conditions like `&& TenantId=={someValue}` or `&& !IsDeleted` to *all* of your Entity Framework Core queries.
 
-This tiny library may help you. Take a look 
+Managing all those extra conditions can be a huge headache, especially in large projects with tons of queries. If you or a teammate ever forgets to add one of these conditions, you could end up in a world of trouble! 😅
+
+This little library is here to help! Take a look at how it works.
 
 ## Installation
+Just use the following commands to install the necessary packages:
 ```
 dotnet add package Armudu.EntityFrameworkCore.Atom.Contract
 dotnet add package Armudu.EntityFrameworkCore.Atom
  ```
 ## Usage
-If your Entity and DbContext classes are placed on different layers due to the architecture (for example CQRS) you are using, 
-you have to install package ```Armudu.EntityFrameworkCore.Atom.Contract``` to layer that contain entities. Also you have to install package 
-```Armudu.EntityFrameworkCore.Atom``` to layer that contain your ApplicationDbContext.
+If your project uses an architecture like **CQRS**, and your Entity and DbContext classes are in different layers, you'll need to install the packages this way:
+* Install `Armudu.EntityFrameworkCore.Atom.Contract` in the layer that holds your entities.
+* Install `Armudu.EntityFrameworkCore.Atom` in the layer that contains your ApplicationDbContext.
+### **1. Inherit from `EfCoreHelperContext`**
+You need to make your DbContext inherit from `EfCoreHelperContext`.
 
-Inherit from EfCoreHelperContext
-![RemoteImage](https://camo.githubusercontent.com/13ae804923aa0e7d3db0f4c6f5b5d325c7e5560e98658993aecde42d63cd4205/68747470733a2f2f692e6962622e636f2f6733766446546a2f646f776e6c6f61642e706e67)
+![RemoteImage](https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/EntityFrameworkHelper.Contracts/Assets/Photo1.png?raw=true)
 
-Implement User service.
-UserId injected from constructor for testing. Don't get hung up on it,You can implement for your needs.
+### **2. Implement the User Service**
+Next, you need to implement a user service. This is how the library gets information like the current user's ID.
 
-![UserService](https://www.linkpicture.com/q/download-1_169.png)
+> Note: The example shows the `UserId` being injected via the constructor for testing. Don't worry about that specific implementation—you can design your service to fit your application's actual needs.
 
-And implement the contract which you want to use.
-You have to set type of Id of audit user 
-![EntityUsage](https://www.linkpicture.com/q/download_753.png)
+### **3. Implement the Contract on Your Entities**
+Finally, you implement the specific contracts you want to use on your entity classes (e.g., `IAuditableEntity`).
 
-After that, your queries automatically will become like this 
-![Query](https://camo.githubusercontent.com/2541eac1308fd464a0a89f56b39a2a9636a4eb28c745d7c29552dbd0672a6ae6/68747470733a2f2f692e6962622e636f2f78437a706342522f646f776e6c6f61642e706e67)
-Current tenantId filter and !IsDeleted will be add to query
+> You must also specify the data type (e.g., `Guid`, `int`) for the audit user's ID.
+
+---
+
+After you've done this, the library automatically takes care of those boilerplate conditions!
+
+Your queries will now automatically include filters for the **current tenant ID** and the `!IsDeleted` condition. No more manual filtering!
+
+---
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are always welcome! If you have a major change in mind, please open an issue first so we can discuss it before you start coding.
 
-Please make sure to update tests as appropriate.
+Also, please make sure you update the tests as needed.
+
+---
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

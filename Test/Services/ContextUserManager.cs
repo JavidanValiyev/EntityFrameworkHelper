@@ -11,9 +11,7 @@ public class ContextUserManager : IContextUserManager<Guid>
     private Guid Id { get; }
     public Guid GetTenantId()
     {
-        if(Id != default)
-            return Id;
-        return  Guid.NewGuid();
+        return Id != Guid.Empty ? Id : Guid.NewGuid();
     }
 
     public static ContextUserManager CreateFromManual(Guid id)
