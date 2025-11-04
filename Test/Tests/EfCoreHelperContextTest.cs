@@ -2,96 +2,54 @@
 using System.Reflection;
 using EntityFrameworkHelper.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NUnit.Framework;
 using Test.Models;
 using Test.Persistance;
 using Test.Services;
+using EntityState = Microsoft.EntityFrameworkCore.EntityState;
 
 namespace Test.Tests
 {
+    
     [TestFixture]
     public class EfCoreHelperContextTest
     {
-        private List<Category> GenerateCategoryList()
-        {
-            List<Category> categories = new List<Category>();
 
-            for (int i = 0; i < 20; i++)
+        public IEnumerable<Company> GetSomeCompanies()
+        {
+            return Enumerable.Range(1, 5).Select(i => new Company()
             {
-                categories.Add(new Category()
-                {
-                    Name = Faker.Name.First()
-                });
-            }
-
-            return categories;
+                Name = Faker.Name.FullName(),
+            });
         }
-
-        private List<Company> GenerateCompany()
-        {
-            List<Company> companies = new List<Company>();
-            for (int i = 0; i < 5; i++)
-            {
-                companies.Add(new Company()
-                {
-                    Name = Faker.Company.Name()
-                });
-            }
-
-            return companies;
-        }
-
-        private void SetFakeDataToDatabase(AdminDbContext adminDbContext)
-        {
-            adminDbContext.Database.EnsureCreated();
-            adminDbContext.Companies.AddRange(GenerateCompany());
-            adminDbContext.Categories.AddRange(GenerateCategoryList());
-            adminDbContext.SaveChanges();
-        }
-
         [Test]
-        public void CompaniesCountShouldNotBeOne()
+        public void AuditableEntityParametersCheck()
         {
-            AdminDbContext adminDbContext = new AdminDbContext();
-            
-            SetFakeDataToDatabase(adminDbContext);
-            var tenantId = adminDbContext.Companies.FirstOrDefault()?.Id;
-            Assert.AreNotEqual(null, tenantId);
-
-            AppDbContext appDbContext = new(ContextUserManager.CreateFromManual(tenantId.GetValueOrDefault()));
-
-            var companies = appDbContext.Companies.ToList();
-
-            Assert.AreNotEqual(1, companies.Count());
+            var createdBy = Guid.NewGuid();
+            AppDbContext dbContext = new AppDbContext(createdBy);
+            dbContext.Database.EnsureCreated();
+            dbContext.Companies.Add(GetSomeCompanies().First());
+            dbContext.SaveChanges();
+            var company = dbContext.Companies.OrderByDescending(x=>x.CreatedDate).First();
+            Assert.IsNotNull(company);
+            Assert.IsNotNull(company.CreatedDate);
+            Assert.AreEqual(company.CreatedBy,createdBy);
+            Assert.IsFalse(company.IsDeleted);
+            Assert.AreEqual(company.DeletedDate, null);
         }
-
         [Test]
-        public void CategoriesShouldOnlyOwn()
+        public void AuditableEntityParametersChecka()
         {
-            AdminDbContext adminDbContext = new AdminDbContext();
-            SetFakeDataToDatabase(adminDbContext);
-            Random random = new Random();
-            var companyOne = adminDbContext.Companies.Skip(random.Next() % adminDbContext.Companies.Count())
-                .FirstOrDefault();
-            Assert.AreNotEqual(null, companyOne);
-            var categories = adminDbContext.Categories.ToList();
-
-            var assignedToCompanyOne = categories.Take(5).Select(c => new CompanyCategory()
-            {
-                TenantId = companyOne!.Id,
-                CategoryId = c.Id
-            }).ToList();
-
-            companyOne!.CompanyCategories.AddRange(assignedToCompanyOne);
-            adminDbContext.SaveChanges();
-
-            AppDbContext appDbContext = new AppDbContext(ContextUserManager.CreateFromManual(companyOne.Id));
-
-            var assignedCategoryList = appDbContext.Companies
-                .Include(x => x.CompanyCategories)
-                .FirstOrDefault(c => c.Id == companyOne.Id)?.CompanyCategories;
-            Assert.AreNotEqual(null, assignedCategoryList);
-            Assert.AreEqual(5, assignedCategoryList.Count(), "Assigned category list count should be 5");
+            var createdBy = Guid.NewGuid();
+            AppDbContext dbContext = new AppDbContext(createdBy);
+            dbContext.Database.EnsureCreated();
+            dbContext.Companies.Add(GetSomeCompanies().First());
+            dbContext.SaveChanges();
+            dbContext.Companies.Remove(dbContext.Companies.First());
+            dbContext.SaveChanges();
+            Assert.AreEqual(0, dbContext.Companies.Count());
+            Console.WriteLine(dbContext.Companies.Count());
         }
     }
 }

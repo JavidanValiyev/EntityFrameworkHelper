@@ -8,6 +8,7 @@
 
     <ItemGroup>
        <PackageReference Include="Armudu.EntityFrameworkCore.Atom.Contracts" Version="1.0.0" />
+       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
     </ItemGroup>
 
 </Project>
