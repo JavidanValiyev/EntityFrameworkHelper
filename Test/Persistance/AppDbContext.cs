@@ -1,6 +1,5 @@
 ﻿using EntityFrameworkHelper.Persistence;
 using Microsoft.EntityFrameworkCore;
-using EntityFrameworkHelper.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Test.Models;
@@ -14,9 +13,9 @@ public class AppDbContext : DbContext
     {
         _tenantId = tenantId;
     }
-    public AppDbContext(IContextUserManager<Guid> contextUserManager)
+    public AppDbContext()
     {
-        _tenantId = contextUserManager.GetTenantId();
+        _tenantId = Guid.NewGuid();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
