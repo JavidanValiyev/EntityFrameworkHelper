@@ -1,4 +1,4 @@
-# EfCore Helper Context
+# EntityFramework Helper
 
 If you've ever worked on projects with **multi-tenant**, **auditable**, or **soft-deletable** tables, you know the pain. You have to constantly add conditions like `&& TenantId=={someValue}` or `&& !IsDeleted` to *all* of your Entity Framework Core queries.
 
