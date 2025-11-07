@@ -7,11 +7,15 @@ namespace EntityFrameworkHelper.Persistence;
 public static class ModelBuilderExtensions
 {
     /// <summary>
-    /// For adding global filters to queries
+    /// The AddGlobalFilters method is an extension method for
+    /// ModelBuilder that adds automatic filtering to
+    /// database queries based on two common patterns:
+    ///     Multi-tenancy - Filtering data by tenant
+    ///     Soft deletion - Excluding soft-deleted records
     /// </summary>
     /// <param name="builder"></param>
-    /// <param name="tenantId"></param>
-    /// <typeparam name="TTenantIdType"></typeparam>
+    /// <param name="tenantId">Id value of tenant</param>
+    /// <typeparam name="TTenantIdType">Recommend to be Guid</typeparam>
     public static void AddGlobalFilters<TTenantIdType>(this ModelBuilder builder, TTenantIdType tenantId)
         where TTenantIdType : struct, IComparable
     {
