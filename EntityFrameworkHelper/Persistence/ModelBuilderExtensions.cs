@@ -10,8 +10,8 @@ public static class ModelBuilderExtensions
     /// The AddGlobalFilters method is an extension method for
     /// ModelBuilder that adds automatic filtering to
     /// database queries based on two common patterns:
-    ///     Multi-tenancy - Filtering data by tenant
-    ///     Soft deletion - Excluding soft-deleted records
+    ///   * Multi-tenancy - Filtering data by tenant
+    ///   * Soft deletion - Excluding soft-deleted records
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="tenantId">Id value of tenant</param>
