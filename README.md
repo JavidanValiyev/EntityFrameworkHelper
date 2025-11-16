@@ -22,7 +22,7 @@ This object should contain the key for the Entity Framework model caching mechan
 You can set the tenant id or unique value for the current tenant, so the library can apply global filter for 
 the current tenant. Take a look to photo.
 
-![RemoteImage](https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/Test/Assets/Screenshot_1.png?raw=true)
+![RemoteImage](https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/workflows/Screenshot_1.png?raw=true)
 
 ### **2. Call AddGlobalFilters func**
 Next, you need to call AddGlobalFilters with your TenantId value not FilterKey object.
@@ -38,13 +38,13 @@ In next step, you have to implement the specific contracts you want to use on yo
 ### **4 Call ConfigureStates func**
 You have to call ConfigureStates in your SaveChanges method of your DbContext.
 > take a look to photo..
-> <img src="https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/Test/Assets/Screenshot_3.png?raw=true">
+> <img src="https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/workflows/Screenshot_3.png?raw=true">
 ### **5. Replace ModelCacheKeyFactory with DynamicModelCacheKeyFactory**
 Finally, you have to replace the default ModelCacheKeyFactory with DynamicModelCacheKeyFactory.
 > ```options.ReplaceService<IModelCacheKeyFactory, DynamicFilterModelCacheKeyFactory>();``` use this line of code
 > on where you write ```AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));```
 > take a look to photo.
-<img src="https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/Test/Assets/Screenshot_2.png?raw=true">
+<img src="https://github.com/JavidanValiyev/EntityFrameworkHelper/blob/main/workflows/Screenshot_2.png?raw=true">
 ---
 
 After you've done this, the library automatically takes care of those boilerplate conditions!
