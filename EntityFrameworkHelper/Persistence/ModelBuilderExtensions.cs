@@ -22,7 +22,7 @@ public static class ModelBuilderExtensions
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
             var clrType = entityType.ClrType;
-            var parameter = Expression.Parameter(clrType, "e");
+            var parameter = Expression.Parameter(clrType, "filterParam");
             Expression? combinedFilter = null;
 
             // Tenant Filter

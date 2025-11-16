@@ -11,14 +11,12 @@ public class DynamicFilterModelCacheKeyFactory : IModelCacheKeyFactory
 {
     public object Create(DbContext context, bool designTime)
     {
+        if (designTime) return this;
         var key = new ModelCacheKey(context, designTime);
 
         // ReSharper disable once SuspiciousTypeConversion.Global
-        if (context is IDynamicQueryFilterSource dynamicSource)
-        {
-            return (key, dynamicSource.FilterKey);
-        }
-
-        return key;
+        if (context is not IDynamicQueryFilterSource dynamicSource)
+            return key;
+        return (key, dynamicSource.FilterKey);
     }
 }
