@@ -9,8 +9,12 @@ namespace Test.Persistance;
 public class AppDbContext : DbContext
 {
     private readonly Guid _tenantId;
-    public AppDbContext(Guid tenantId)
+    private readonly bool _isAdminContext = false;
+    private readonly bool _passStateConfigurations = false;
+    public AppDbContext(Guid tenantId = default,bool isAdminContext = false,bool passStateConfigurations = false)
     {
+        _passStateConfigurations = passStateConfigurations;
+        _isAdminContext = isAdminContext;
         _tenantId = tenantId;
     }
     public AppDbContext()
@@ -20,7 +24,8 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.ReplaceService<IModelCacheKeyFactory, ModelCacheKeyFactory>();
+        if(_isAdminContext)
+            optionsBuilder.ReplaceService<IModelCacheKeyFactory, ModelCacheKeyFactory>();
         optionsBuilder.UseSqlServer(@"Server=localhost;Database=efCoreTest;Trusted_Connection=True;TrustServerCertificate=True;")
             .LogTo(Console.WriteLine, LogLevel.Information);;
         optionsBuilder.EnableSensitiveDataLogging(); 
@@ -28,22 +33,25 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.AddGlobalFilters(_tenantId);
+        if(!_isAdminContext)
+            modelBuilder.AddGlobalFilters(_tenantId);
         base.OnModelCreating(modelBuilder);
     }
-
+    
     public override int SaveChanges()
     {
-        ChangeTracker.Entries().ConfigureStates(_tenantId);
+        if(!_passStateConfigurations)
+            ChangeTracker.Entries().ConfigureStates(_tenantId);
         return base.SaveChanges();
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        await Task.Run(() =>
-        {
-            ChangeTracker.Entries().ConfigureStates(_tenantId);
-        }, cancellationToken); 
+        if(!_passStateConfigurations)
+            await Task.Run(() =>
+            {
+                ChangeTracker.Entries().ConfigureStates(_tenantId);
+            }, cancellationToken); 
         return await base.SaveChangesAsync(cancellationToken);    
     }
 
