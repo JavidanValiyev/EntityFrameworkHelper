@@ -8,7 +8,7 @@ public static class DbContextExtensions
 {
     public static void ConfigureStates<T>(this IEnumerable<EntityEntry>  entries,T tenantId) where T : struct,IComparable
     {
-        foreach (var entry in entries)
+        foreach (var entry in entries.Where(x=>x.Entity is IAuditable<T> or ITenant<T> or ISoftDeletable))
         {
             if (entry.State == EntityState.Deleted & entry.Entity is ISoftDeletable)
             {
