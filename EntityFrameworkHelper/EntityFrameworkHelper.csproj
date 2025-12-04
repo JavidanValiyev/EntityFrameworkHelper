@@ -9,12 +9,12 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Copyright>Copyright (c) 2025 Armudu</Copyright>
-        <Version>6.0.0</Version>
+        <Version>6.1.0</Version>
         <Authors>JavidanValiyev</Authors>
         <Company>Armudu</Company>
         <Description>This library created for helping to converting .net entity framework projects to multi tenant entity framework project.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>6.0.0</PackageVersion>
+        <PackageVersion>6.1.0</PackageVersion>
         <PackageReleaseNotes>Contracts removed</PackageReleaseNotes>
     </PropertyGroup>
 
