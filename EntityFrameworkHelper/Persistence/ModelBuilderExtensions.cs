@@ -84,8 +84,7 @@ public static class ModelBuilderExtensions
     /// database queries based on the SoftDeletable pattern:
     /// </summary>
     /// <param name="builder"></param>
-    public static void AddSoftDeleteFilter<TTenantIdType>(this ModelBuilder builder)
-        where TTenantIdType : struct, IComparable
+    public static void AddSoftDeleteFilter(this ModelBuilder builder)
     {
         foreach (var entityType in builder.Model.GetEntityTypes()
                      .Where(x => typeof(ISoftDeletable).IsAssignableFrom(x.ClrType)))
